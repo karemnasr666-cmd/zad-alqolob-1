@@ -1,0 +1,32 @@
+name: Build Zad Alqolob APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: تحميل المشروع
+        uses: actions/checkout@v4
+
+      - name: تجهيز Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: بناء APK
+        run: |
+          cd zad_alqolob_1_code/android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: حفظ APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Zad-Alqolob-APK
+          path: zad_alqolob_1_code/android/app/build/outputs/apk/debug/*.apk
