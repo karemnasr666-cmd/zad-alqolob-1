@@ -1,31 +1,34 @@
 name: Build Zad Alqolob APK
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: تحميل المشروع
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: تجهيز Java
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: بناء APK
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build APK
         run: |
           cd zad_alqolob_1_code/android
-          chmod +x gradlew
-          ./gradlew assembleDebug
+          gradle assembleDebug
 
-      - name: حفظ APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Zad-Alqolob-APK
